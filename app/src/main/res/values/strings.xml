@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Registro de Contactos</string>
+
+    <string name="title_registro_contacto">Registro de Contacto</string>
+    <string name="label_pais">País</string>
+    <string name="hint_nombre">Nombre completo</string>
+    <string name="hint_telefono">Teléfono</string>
+    <string name="hint_nota">Nota / Descripción</string>
+
+    <string name="desc_foto_contacto">Foto del contacto</string>
+    <string name="btn_tomar_foto">Capturar / Seleccionar Foto</string>
+    <string name="btn_salvar_contacto">Salvar Contacto</string>
+    <string name="btn_ver_contactos">Ver contactos</string>
+
+    <string name="title_lista_contactos">Lista de Contactos</string>
+    <string name="no_contactos">No hay contactos registrados.</string>
+
+    <string-array name="paises_array">
+        <item>-- Seleccione un país --</item>
+        <item>Honduras (+504)</item>
+        <item>Costa Rica (+506)</item>
+        <item>Guatemala (+502)</item>
+        <item>El Salvador (+503)</item>
+        <item>Nicaragua (+505)</item>
+        <item>Panamá (+507)</item>
+        <item>México (+52)</item>
+        <item>Estados Unidos (+1)</item>
+    </string-array>
+</resources>
