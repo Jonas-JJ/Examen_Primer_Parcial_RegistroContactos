@@ -1,6 +1,7 @@
 package com.ucenm.examenprimerparcialregistrocontactos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -47,6 +48,18 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
         } else {
             holder.imgFoto.setImageResource(R.drawable.ic_contact_placeholder);
         }
+
+        // Abrir SecondActivity con los detalles al hacer clic en el ítem
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, SecondActivity.class);
+            intent.putExtra("id", contacto.getId());
+            intent.putExtra("nombre", contacto.getNombre());
+            intent.putExtra("telefono", contacto.getTelefono());
+            intent.putExtra("pais", contacto.getPais());
+            intent.putExtra("nota", contacto.getNota());
+            intent.putExtra("imagen", contacto.getImagen());
+            context.startActivity(intent);
+        });
     }
 
     @Override

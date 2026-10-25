@@ -188,18 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void guardarContacto() {
         String pais = spnPais.getSelectedItem() != null ? spnPais.getSelectedItem().toString() : "";
-        int posicionPais = spnPais.getSelectedItemPosition();
         String nombre = txtNombre.getText() != null ? txtNombre.getText().toString().trim() : "";
         String telefono = txtTelefono.getText() != null ? txtTelefono.getText().toString().trim() : "";
         String nota = txtNota.getText() != null ? txtNota.getText().toString().trim() : "";
 
-        // 1. Validaciones de campos vacíos
-        if (posicionPais == 0) {
-            mostrarAlerta("Campo Requerido", "Debe seleccionar un país de la lista.");
-            spnPais.requestFocus();
-            return;
-        }
-
+        // 1. Validaciones de campos obligatorios (Únicamente Nombre y Teléfono)
         if (nombre.isEmpty()) {
             mostrarAlerta("Campo Requerido", "Debe escribir un nombre.");
             txtNombre.requestFocus();
@@ -209,17 +202,6 @@ public class MainActivity extends AppCompatActivity {
         if (telefono.isEmpty()) {
             mostrarAlerta("Campo Requerido", "Debe escribir un teléfono.");
             txtTelefono.requestFocus();
-            return;
-        }
-
-        if (nota.isEmpty()) {
-            mostrarAlerta("Campo Requerido", "Debe escribir una nota.");
-            txtNota.requestFocus();
-            return;
-        }
-
-        if (imagenSeleccionada == null || imagenSeleccionada.length == 0) {
-            mostrarAlerta("Campo Requerido", "Debe capturar o seleccionar una foto para el contacto.");
             return;
         }
 
@@ -236,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // 3. Crear objeto Contacto e Insertar en SQLite
+        // 3. Crear objeto Contacto e Insertar en SQLite (La foto es OPCIONAL; si es null, se guarda nulo)
         Contacto nuevoContacto = new Contacto(pais, nombre, telefono, nota, imagenSeleccionada);
         long resultado = conexion.insertarContacto(nuevoContacto);
 

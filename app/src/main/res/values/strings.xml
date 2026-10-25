@@ -5,7 +5,7 @@
     <string name="label_pais">País</string>
     <string name="hint_nombre">Nombre completo</string>
     <string name="hint_telefono">Teléfono</string>
-    <string name="hint_nota">Nota / Descripción</string>
+    <string name="hint_nota">Nota / Descripción (Opcional)</string>
 
     <string name="desc_foto_contacto">Foto del contacto</string>
     <string name="btn_tomar_foto">Capturar / Seleccionar Foto</string>
@@ -15,15 +15,19 @@
     <string name="title_lista_contactos">Lista de Contactos</string>
     <string name="no_contactos">No hay contactos registrados.</string>
 
+    <string name="title_detalle_contacto">Detalle del Contacto</string>
+    <string name="label_telefono_detalle">Teléfono:</string>
+    <string name="label_nota_detalle">Nota:</string>
+    <string name="btn_regresar">Regresar</string>
+
     <string-array name="paises_array">
-        <item>-- Seleccione un país --</item>
-        <item>Honduras (+504)</item>
-        <item>Costa Rica (+506)</item>
-        <item>Guatemala (+502)</item>
-        <item>El Salvador (+503)</item>
-        <item>Nicaragua (+505)</item>
-        <item>Panamá (+507)</item>
-        <item>México (+52)</item>
-        <item>Estados Unidos (+1)</item>
+        <item>+504 (HN)</item>
+        <item>+506 (CR)</item>
+        <item>+502 (GT)</item>
+        <item>+503 (SV)</item>
+        <item>+505 (NI)</item>
+        <item>+507 (PA)</item>
+        <item>+52 (MX)</item>
+        <item>+1 (US)</item>
     </string-array>
 </resources>
