@@ -12,12 +12,18 @@
     <string name="btn_salvar_contacto">Salvar Contacto</string>
     <string name="btn_ver_contactos">Ver contactos</string>
 
+    <string name="label_avatars_predeterminados">O selecciona un avatar predeterminado:</string>
+    <string name="avatar_hombre">Hombre</string>
+    <string name="avatar_mujer">Mujer</string>
+    <string name="avatar_adolescente">Adolescente</string>
+
     <string name="title_lista_contactos">Lista de Contactos</string>
     <string name="no_contactos">No hay contactos registrados.</string>
 
     <string name="title_detalle_contacto">Detalle del Contacto</string>
     <string name="label_telefono_detalle">Teléfono:</string>
     <string name="label_nota_detalle">Nota:</string>
+    <string name="btn_llamar">Llamar al Contacto</string>
     <string name="btn_regresar">Regresar</string>
 
     <string-array name="paises_array">

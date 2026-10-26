@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -24,6 +29,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
@@ -38,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private TextInputEditText txtNombre;
     private TextInputEditText txtTelefono;
     private TextInputEditText txtNota;
+
+    private MaterialCardView cardAvatarHombre;
+    private MaterialCardView cardAvatarMujer;
+    private MaterialCardView cardAvatarAdolescente;
 
     private byte[] imagenSeleccionada = null;
     private SQLiteConexion conexion;
@@ -55,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     if (extras != null) {
                         Object dataObj = extras.get("data");
                         if (dataObj instanceof Bitmap) {
+                            deseleccionarAvatares();
                             procesarYMostrarImagen((Bitmap) dataObj);
                         }
                     }
@@ -70,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     if (imageUri != null) {
                         try (InputStream inputStream = getContentResolver().openInputStream(imageUri)) {
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            deseleccionarAvatares();
                             procesarYMostrarImagen(bitmap);
                         } catch (Exception e) {
                             Log.e(TAG, "Error al cargar la imagen de la galería", e);
@@ -116,10 +128,93 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton btnSalvarContacto = findViewById(R.id.btnSalvarContacto);
         MaterialButton btnVerContactos = findViewById(R.id.btnVerContactos);
 
-        // Listeners
+        // Bind Avatar Cards
+        cardAvatarHombre = findViewById(R.id.cardAvatarHombre);
+        cardAvatarMujer = findViewById(R.id.cardAvatarMujer);
+        cardAvatarAdolescente = findViewById(R.id.cardAvatarAdolescente);
+
+        // Aplicar Filtro de Entrada en tiempo real al campo Nombre
+        aplicarFiltrosDeEntrada();
+
+        // Listeners para Avatares Predeterminados
+        cardAvatarHombre.setOnClickListener(v -> seleccionarAvatar(R.drawable.ic_avatar_man, cardAvatarHombre));
+        cardAvatarMujer.setOnClickListener(v -> seleccionarAvatar(R.drawable.ic_avatar_woman, cardAvatarMujer));
+        cardAvatarAdolescente.setOnClickListener(v -> seleccionarAvatar(R.drawable.ic_avatar_teen, cardAvatarAdolescente));
+
+        // Listeners para Botones Principales
         btnTomarFoto.setOnClickListener(v -> mostrarOpcionesCaptura());
         btnSalvarContacto.setOnClickListener(v -> guardarContacto());
         btnVerContactos.setOnClickListener(v -> navegarAContactos());
+    }
+
+    private void aplicarFiltrosDeEntrada() {
+        // Filtro para el campo Nombre: solo letras (incluye tildes y ñ) y espacios
+        InputFilter filtroSoloLetras = (source, start, end, dest, dstart, dend) -> {
+            for (int i = start; i < end; i++) {
+                char c = source.charAt(i);
+                String charString = String.valueOf(c);
+                if (!charString.matches(REGEX_NOMBRE)) {
+                    return ""; // Bloquea números y caracteres especiales en tiempo real
+                }
+            }
+            return null; // Acepta el carácter
+        };
+
+        // Filtro para el campo Teléfono: solo dígitos numéricos
+        InputFilter filtroSoloNumeros = (source, start, end, dest, dstart, dend) -> {
+            for (int i = start; i < end; i++) {
+                if (!Character.isDigit(source.charAt(i))) {
+                    return ""; // Bloquea caracteres no numéricos
+                }
+            }
+            return null;
+        };
+
+        txtNombre.setFilters(new InputFilter[]{filtroSoloLetras});
+        txtTelefono.setFilters(new InputFilter[]{filtroSoloNumeros});
+    }
+
+    private void seleccionarAvatar(int resIdDrawable, MaterialCardView cardSeleccionado) {
+        // 1. Resaltar visualmente la tarjeta seleccionada
+        deseleccionarAvatares();
+        cardSeleccionado.setStrokeColor(Color.parseColor("#2563EB")); // Azul resaltado
+        cardSeleccionado.setStrokeWidth(6);
+
+        // 2. Convertir el drawable vectorial en Bitmap / byte[]
+        Drawable drawable = ContextCompat.getDrawable(this, resIdDrawable);
+        if (drawable != null) {
+            Bitmap bitmap = drawableToBitmap(drawable);
+            imagenSeleccionada = bitmapToByteArray(bitmap);
+            imgFotoContacto.setImageBitmap(bitmap);
+        }
+    }
+
+    private void deseleccionarAvatares() {
+        int colorNormal = Color.parseColor("#CBD5E1");
+        int strokeWidthNormal = 2;
+
+        cardAvatarHombre.setStrokeColor(colorNormal);
+        cardAvatarHombre.setStrokeWidth(strokeWidthNormal);
+
+        cardAvatarMujer.setStrokeColor(colorNormal);
+        cardAvatarMujer.setStrokeWidth(strokeWidthNormal);
+
+        cardAvatarAdolescente.setStrokeColor(colorNormal);
+        cardAvatarAdolescente.setStrokeWidth(strokeWidthNormal);
+    }
+
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+        int width = drawable.getIntrinsicWidth() > 0 ? drawable.getIntrinsicWidth() : 200;
+        int height = drawable.getIntrinsicHeight() > 0 ? drawable.getIntrinsicHeight() : 200;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private void mostrarOpcionesCaptura() {
@@ -236,6 +331,7 @@ public class MainActivity extends AppCompatActivity {
         txtTelefono.setText("");
         txtNota.setText("");
         imgFotoContacto.setImageResource(R.drawable.ic_contact_placeholder);
+        deseleccionarAvatares();
         imagenSeleccionada = null;
         txtNombre.clearFocus();
         txtTelefono.clearFocus();

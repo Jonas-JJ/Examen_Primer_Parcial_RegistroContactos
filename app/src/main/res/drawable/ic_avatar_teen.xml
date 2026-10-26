@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- Circle Background -->
+  <path
+      android:fillColor="#10B981"
+      android:pathData="M12,0C5.37,0 0,5.37 0,12s5.37,12 12,12 12,-5.37 12,-12S18.63,0 12,0z"/>
+  <!-- Teen with Cap / Headphones style -->
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M12,4c-2.2,0 -4,1.8 -4,4v1c0,2.2 1.8,4 4,4s4,-1.8 4,-4V8c0,-2.2 -1.8,-4 -4,-4zM12,14c-2.67,0 -8,1.34 -8,4v2h16v-2c0,-2.66 -5.33,-4 -8,-4z"/>
+</vector>

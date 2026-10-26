@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <!-- Circle Background -->
+  <path
+      android:fillColor="#EC4899"
+      android:pathData="M12,0C5.37,0 0,5.37 0,12s5.37,12 12,12 12,-5.37 12,-12S18.63,0 12,0z"/>
+  <!-- Woman Hair & Face -->
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M12,4c-2.21,0 -4,1.79 -4,4 0,1.5 0.83,2.81 2.06,3.5C8.01,12.28 6.5,13.9 6,16v3h12v-3c-0.5,-2.1 -2.01,-3.72 -4.06,-4.5C15.17,10.81 16,9.5 16,8c0,-2.21 -1.79,-4 -4,-4z"/>
+</vector>

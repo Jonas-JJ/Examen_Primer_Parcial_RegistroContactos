@@ -16,7 +16,7 @@
         android:padding="20dp"
         android:gravity="center_horizontal">
 
-        <!-- Toolbar / Encabezado -->
+        <!-- Título Superior -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,9 +144,20 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Botón de Llamar al Contacto -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLlamar"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="@string/btn_llamar"
+            android:textSize="16sp"
+            app:cornerRadius="8dp"
+            android:layout_marginBottom="12dp" />
+
         <!-- Botón de Regresar -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegresar"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:text="@string/btn_regresar"

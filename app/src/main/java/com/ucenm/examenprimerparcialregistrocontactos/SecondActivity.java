@@ -1,14 +1,21 @@
 package com.ucenm.examenprimerparcialregistrocontactos;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -22,7 +29,19 @@ public class SecondActivity extends AppCompatActivity {
     private TextView txtDetallePais;
     private TextView txtDetalleTelefono;
     private TextView txtDetalleNota;
-    private MaterialButton btnRegresar;
+
+    private String numeroTelefonoParaLlamar = "";
+
+    private final ActivityResultLauncher<String> requestCallPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    realizarLlamada();
+                } else {
+                    Toast.makeText(this, "Se requiere permiso de llamadas para realizar la llamada.", Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +61,14 @@ public class SecondActivity extends AppCompatActivity {
         txtDetallePais = findViewById(R.id.txtDetallePais);
         txtDetalleTelefono = findViewById(R.id.txtDetalleTelefono);
         txtDetalleNota = findViewById(R.id.txtDetalleNota);
-        btnRegresar = findViewById(R.id.btnRegresar);
+        MaterialButton btnLlamar = findViewById(R.id.btnLlamar);
+        MaterialButton btnRegresar = findViewById(R.id.btnRegresar);
 
         // Recibir datos desde el Intent
         obtenerYMostrarDatos();
 
-        // Listener para el botón regresar
+        // Listeners
+        btnLlamar.setOnClickListener(v -> solicitarPermisoYLlamar());
         btnRegresar.setOnClickListener(v -> finish());
     }
 
@@ -60,6 +81,8 @@ public class SecondActivity extends AppCompatActivity {
             String pais = intent.getStringExtra("pais");
             String nota = intent.getStringExtra("nota");
             byte[] imagenBytes = intent.getByteArrayExtra("imagen");
+
+            this.numeroTelefonoParaLlamar = telefono != null ? telefono : "";
 
             // Nombre
             if (nombre != null && !nombre.isEmpty()) {
@@ -96,6 +119,33 @@ public class SecondActivity extends AppCompatActivity {
             } else {
                 imgDetalleFoto.setImageResource(R.drawable.ic_contact_placeholder);
             }
+        }
+    }
+
+    private void solicitarPermisoYLlamar() {
+        if (numeroTelefonoParaLlamar == null || numeroTelefonoParaLlamar.trim().isEmpty()) {
+            Toast.makeText(this, "El contacto no tiene un número telefónico registrado.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            realizarLlamada();
+        } else {
+            requestCallPermissionLauncher.launch(Manifest.permission.CALL_PHONE);
+        }
+    }
+
+    private void realizarLlamada() {
+        if (numeroTelefonoParaLlamar == null || numeroTelefonoParaLlamar.trim().isEmpty()) return;
+
+        try {
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + numeroTelefonoParaLlamar));
+            startActivity(callIntent);
+        } catch (SecurityException e) {
+            Toast.makeText(this, "Permiso denegado para realizar la llamada.", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(this, "Error al intentar realizar la llamada.", Toast.LENGTH_SHORT).show();
         }
     }
 }
