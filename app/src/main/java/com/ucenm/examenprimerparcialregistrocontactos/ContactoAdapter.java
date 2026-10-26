@@ -1,12 +1,12 @@
 package com.ucenm.examenprimerparcialregistrocontactos;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,12 +17,22 @@ import java.util.List;
 
 public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.ContactoViewHolder> {
 
+    public interface OnContactoActionListener {
+        void onLlamarContacto(Contacto contacto);
+        void onCompartirContacto(Contacto contacto);
+        void onEditarContacto(Contacto contacto);
+        void onEliminarContacto(Contacto contacto, int position);
+        void onVerImagenContacto(Contacto contacto);
+    }
+
     private final Context context;
     private final List<Contacto> listaContactos;
+    private final OnContactoActionListener listener;
 
-    public ContactoAdapter(Context context, List<Contacto> listaContactos) {
+    public ContactoAdapter(Context context, List<Contacto> listaContactos, OnContactoActionListener listener) {
         this.context = context;
         this.listaContactos = listaContactos;
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,9 +47,9 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
         Contacto contacto = listaContactos.get(position);
 
         holder.txtNombre.setText(contacto.getNombre());
-        String telefonoConPais = contacto.getTelefono() + " (" + contacto.getPais() + ")";
+        String telefonoConPais = contacto.getPais() + " " + contacto.getTelefono();
         holder.txtTelefonoPais.setText(telefonoConPais);
-        holder.txtNota.setText(contacto.getNota());
+        holder.txtNota.setText(contacto.getNota() != null && !contacto.getNota().isEmpty() ? contacto.getNota() : "Sin nota");
 
         byte[] imagenBytes = contacto.getImagen();
         if (imagenBytes != null && imagenBytes.length > 0) {
@@ -49,17 +59,13 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
             holder.imgFoto.setImageResource(R.drawable.ic_contact_placeholder);
         }
 
-        // Abrir SecondActivity con los detalles al hacer clic en el ítem
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, SecondActivity.class);
-            intent.putExtra("id", contacto.getId());
-            intent.putExtra("nombre", contacto.getNombre());
-            intent.putExtra("telefono", contacto.getTelefono());
-            intent.putExtra("pais", contacto.getPais());
-            intent.putExtra("nota", contacto.getNota());
-            intent.putExtra("imagen", contacto.getImagen());
-            context.startActivity(intent);
-        });
+        // Listeners para cada acción
+        holder.imgFoto.setOnClickListener(v -> listener.onVerImagenContacto(contacto));
+        holder.btnLlamar.setOnClickListener(v -> listener.onLlamarContacto(contacto));
+        holder.btnCompartir.setOnClickListener(v -> listener.onCompartirContacto(contacto));
+        holder.btnEditar.setOnClickListener(v -> listener.onEditarContacto(contacto));
+        holder.btnEliminar.setOnClickListener(v -> listener.onEliminarContacto(contacto, holder.getBindingAdapterPosition()));
+        holder.itemView.setOnClickListener(v -> listener.onVerImagenContacto(contacto));
     }
 
     @Override
@@ -70,6 +76,7 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
     public static class ContactoViewHolder extends RecyclerView.ViewHolder {
         ImageView imgFoto;
         TextView txtNombre, txtTelefonoPais, txtNota;
+        ImageButton btnLlamar, btnCompartir, btnEditar, btnEliminar;
 
         public ContactoViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +84,10 @@ public class ContactoAdapter extends RecyclerView.Adapter<ContactoAdapter.Contac
             txtNombre = itemView.findViewById(R.id.txtItemNombre);
             txtTelefonoPais = itemView.findViewById(R.id.txtItemTelefonoPais);
             txtNota = itemView.findViewById(R.id.txtItemNota);
+            btnLlamar = itemView.findViewById(R.id.btnItemLlamar);
+            btnCompartir = itemView.findViewById(R.id.btnItemCompartir);
+            btnEditar = itemView.findViewById(R.id.btnItemEditar);
+            btnEliminar = itemView.findViewById(R.id.btnItemEliminar);
         }
     }
 }

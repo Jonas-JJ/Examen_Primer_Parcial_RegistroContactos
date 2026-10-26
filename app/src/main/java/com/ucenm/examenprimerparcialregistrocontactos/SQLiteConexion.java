@@ -91,4 +91,25 @@ public class SQLiteConexion extends SQLiteOpenHelper {
         db.close();
         return listaContactos;
     }
+
+    public int eliminarContacto(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int filasAfectadas = db.delete(TABLE_CONTACTOS, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return filasAfectadas;
+    }
+
+    public int actualizarContacto(Contacto contacto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_PAIS, contacto.getPais());
+        values.put(COL_NOMBRE, contacto.getNombre());
+        values.put(COL_TELEFONO, contacto.getTelefono());
+        values.put(COL_NOTA, contacto.getNota());
+        values.put(COL_IMAGEN, contacto.getImagen());
+
+        int filasAfectadas = db.update(TABLE_CONTACTOS, values, COL_ID + " = ?", new String[]{String.valueOf(contacto.getId())});
+        db.close();
+        return filasAfectadas;
+    }
 }

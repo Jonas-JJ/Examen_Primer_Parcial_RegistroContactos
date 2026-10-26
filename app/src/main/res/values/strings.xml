@@ -26,6 +26,11 @@
     <string name="btn_llamar">Llamar al Contacto</string>
     <string name="btn_regresar">Regresar</string>
 
+    <string name="desc_llamar">Llamar al contacto</string>
+    <string name="desc_compartir">Compartir contacto</string>
+    <string name="desc_editar">Editar contacto</string>
+    <string name="desc_eliminar">Eliminar contacto</string>
+
     <string-array name="paises_array">
         <item>+504 (HN)</item>
         <item>+506 (CR)</item>

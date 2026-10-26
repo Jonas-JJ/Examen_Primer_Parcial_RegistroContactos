@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="12dp"
     android:layout_marginVertical="6dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="14dp"
     app:cardElevation="2dp"
     app:strokeColor="#E2E8F0"
     app:strokeWidth="1dp">
@@ -14,62 +14,129 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical">
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="0dp"
-            app:strokeColor="#CBD5E1"
-            app:strokeWidth="1dp">
-
-            <ImageView
-                android:id="@+id/imgItemFoto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_contact_placeholder"
-                android:contentDescription="@string/desc_foto_contacto" />
-        </com.google.android.material.card.MaterialCardView>
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="14dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/txtItemNombre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1F2937"
-                tools:text="Nombre Contacto" />
+            <!-- Avatar Foto del Contacto -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#CBD5E1"
+                app:strokeWidth="1dp">
 
-            <TextView
-                android:id="@+id/txtItemTelefonoPais"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="#2563EB"
-                android:layout_marginTop="2dp"
-                tools:text="+504 9999-9999 (Honduras)" />
+                <ImageView
+                    android:id="@+id/imgItemFoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_contact_placeholder"
+                    android:contentDescription="@string/desc_foto_contacto"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/txtItemNota"
-                android:layout_width="wrap_content"
+            <!-- Datos del Contacto -->
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="#6B7280"
-                android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                tools:text="Nota del contacto" />
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp">
+
+                <TextView
+                    android:id="@+id/txtItemNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="#1F2937"
+                    tools:text="Juan Pérez" />
+
+                <TextView
+                    android:id="@+id/txtItemTelefonoPais"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#2563EB"
+                    android:textStyle="bold"
+                    android:layout_marginTop="2dp"
+                    tools:text="+504 9999-9999" />
+
+                <TextView
+                    android:id="@+id/txtItemNota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="#6B7280"
+                    android:layout_marginTop="2dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="Nota sobre el contacto" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F1F5F9"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="6dp" />
+
+        <!-- Botones de Acción (Llamar, Compartir, Editar, Eliminar) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- Llamar -->
+            <ImageButton
+                android:id="@+id/btnItemLlamar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_call"
+                android:contentDescription="@string/desc_llamar"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Compartir -->
+            <ImageButton
+                android:id="@+id/btnItemCompartir"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_share"
+                android:contentDescription="@string/desc_compartir"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Editar -->
+            <ImageButton
+                android:id="@+id/btnItemEditar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_edit"
+                android:contentDescription="@string/desc_editar"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Eliminar -->
+            <ImageButton
+                android:id="@+id/btnItemEliminar"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/desc_eliminar" />
+
         </LinearLayout>
 
     </LinearLayout>
